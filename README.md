@@ -22,3 +22,22 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## messagesテーブル
+
+|Column|Type|Options|
+|------|----|-------|
+|group|references|null: false, foreign_key: true|
+|content|string|null: false|
+
+### Association
+- belongs_to :group
+
+## groupsテーブル
+
+|Column|Type|Options|
+|------|----|-------|
+|name|string|null: false, unique: true|
+
+### Association
+- has_many :messages
