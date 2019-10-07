@@ -7,4 +7,6 @@
     = csp_meta_tag
   %body
     = yield
+  = stylesheet_link_tag 'application',media: "all"
   = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %script{:crossorigin => "anonymous", :src => "https://kit.fontawesome.com/8bfacc0db4.js"}
