@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__head">
-      <a class="sidebar__head__plus">
+      <a class="sidebar__head__plus" href="#open01">
         <i class="fas fa-plus plus"></i>
       </a>
     </div>
@@ -34,6 +34,7 @@
 </template>
 <style lang="scss">
   .sidebar{
+    float: left;
     height: 100vh;
     width: 330px;
     background-color: gray;

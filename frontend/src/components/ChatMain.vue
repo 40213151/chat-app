@@ -36,6 +36,7 @@
 </template>
 <style lang="scss">
   .chat{
+    float: right;
     height: 100vh;
     width: calc(100vw - 330px);
     font-size: 29px;
