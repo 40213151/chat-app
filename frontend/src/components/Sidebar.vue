@@ -6,32 +6,30 @@
       </a>
     </div>
     <div class="sidebar__list">
-      <div class="sidebar__list__group">
+      <div  v-for="e in groups" :key="e.id" class="sidebar__list__group">
         <div class="sidebar__list__group--name">
-          チャットグループ名
-        </div>
-        <div class="sidebar__list__group--number">
-          2
-        </div>
-      </div>
-      <div class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
-          チャットグループ名
-        </div>
-      </div>
-      <div class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
-          チャットグループ名
-        </div>
-      </div>
-      <div class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
-          チャットグループ名
+          {{ e.name }}
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+import axios from 'axios';
+
+export default{
+  data:function(){
+    return{
+      groups: []
+    }
+  },
+  mounted(){
+    axios
+      .get('http://localhost:3000/api/groups')
+      .then(response => (this.groups = response.data ))
+  }
+};
+</script>
 <style lang="scss">
   .sidebar{
     float: left;
