@@ -1,13 +1,16 @@
 import axios from 'axios';
-import {groupUrl, topUrl} from './constant.js';
+import {topUrl,groupUrl} from './constant.js';
+
+//// ローカル環境URLと実際のパスを連結し、ローカル環境下で対応できる様にした
+const localGroupUrl = (topUrl + groupUrl);
 
 export function groupList(){
-    return axios.get(groupUrl)
+    return axios.get(localGroupUrl)
 }
 
 export function groupCreate(hoge){
     return axios
-            .post(groupUrl, hoge)
+            .post(localGroupUrl, hoge)
             .then(response =>{
               location.href = topUrl;
             })
