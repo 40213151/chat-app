@@ -6,32 +6,34 @@
       </a>
     </div>
     <div class="sidebar__list">
-      <div class="sidebar__list__group">
+      <div  v-for="e in groups" :key="e.id" class="sidebar__list__group">
         <div class="sidebar__list__group--name">
-          チャットグループ名
-        </div>
-        <div class="sidebar__list__group--number">
-          2
-        </div>
-      </div>
-      <div class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
-          チャットグループ名
-        </div>
-      </div>
-      <div class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
-          チャットグループ名
-        </div>
-      </div>
-      <div class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
-          チャットグループ名
+          {{ e.name }}
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+import {groupList} from '../Api.js';
+
+export default{
+  data:function(){
+    return{
+      groups: []
+    }
+  },
+  methods: {
+    async fetchGroups () {
+      const response = await groupList();
+      this.groups = response.data
+    }
+  },
+  mounted(){
+      this.fetchGroups()
+  }
+};
+</script>
 <style lang="scss">
   .sidebar{
     float: left;

@@ -22,6 +22,8 @@
 </template>
 <script>
 import axios from 'axios';
+import {groupCreate} from '../Api.js';
+
 export default {
   data: function() {
     return{
@@ -33,16 +35,7 @@ export default {
   },
   methods: {
     createGroup: function(){
-      axios
-        .post('http://localhost:3000/api/groups', this.group)
-        .then(response =>{
-          location.href = 'http://localhost:3000';
-        })
-        .catch(error => {
-          if(error.response.data && error.response.data.errors){
-            this.errors = error.response.data.errors;
-          }
-        });
+      groupCreate(this.group);
     }
   }
 };
