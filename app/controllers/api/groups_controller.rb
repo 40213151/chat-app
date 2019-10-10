@@ -9,7 +9,6 @@ class Api::GroupsController < ApplicationController
     if @group.save
       render json: @group, status: :created
     else
-      # render json: @group.errors, status: :unprocessable_entity
       render json: { errors: @group.errors.full_messages }, status: :unprocessable_entity
     end
   end
