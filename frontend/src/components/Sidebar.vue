@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import {groupList} from '../Api.js';
 
 export default{
   data:function(){
@@ -23,10 +23,14 @@ export default{
       groups: []
     }
   },
+  methods: {
+    async fetchGroups () {
+      const response = await groupList();
+      this.groups = response.data
+    }
+  },
   mounted(){
-    axios
-      .get('http://localhost:3000/api/groups')
-      .then(response => (this.groups = response.data ))
+      this.fetchGroups()
   }
 };
 </script>
