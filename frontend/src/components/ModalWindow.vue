@@ -21,8 +21,8 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
 import {groupCreate} from '../Api.js';
+import {ErrorMessage} from '../Api.js';
 
 export default {
   data: function() {
@@ -35,7 +35,10 @@ export default {
   },
   methods: {
     createGroup: function(){
-      groupCreate(this.group);
+      groupCreate(this.group)
+      .catch(error => {
+        ErrorMessage(error,this);
+      });
     }
   }
 };
