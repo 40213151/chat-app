@@ -14,6 +14,17 @@ RSpec.describe Group, type: :model do
         group.valid?
         expect(group.errors[:name])
       end
+      it "is invalid with a duplicate name" do
+        # Group.create(
+        #   name: 'test'
+        # )
+        FactoryBot.create :test
+        group = Group.new(
+          name: 'test'
+        )
+        group.valid?
+        expect(group.valid?).to eq(false)
+      end
     end
   end
 end
