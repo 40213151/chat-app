@@ -1,11 +1,12 @@
 class Api::GroupsController < ApplicationController
+  before_action :set_group, only: [:show,:update,:destroy]
+
   def index
     groups = Group.all
     render json: groups
   end
 
   def show
-    @group = Group.find(params[:id])
     render json: @group
   end
 
@@ -19,7 +20,6 @@ class Api::GroupsController < ApplicationController
   end
 
   def update
-    @group = Group.find(params[:id])
       if @group.update(group_params)
         head :no_content
       else
@@ -27,7 +27,16 @@ class Api::GroupsController < ApplicationController
       end
   end
 
+  def destroy
+    @group.destroy!
+    head :no_content
+  end
+
   private
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
   def group_params
     params.require(:group).permit(:name)
   end
