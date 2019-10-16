@@ -23,9 +23,6 @@ export function groupCreate(group){
 export function groupUpdate(group){
     return axios
       .patch(localGroupUrl + `${group.id}`, group)
-      .then(response =>{
-        location.href = topUrl;
-      })
 }
 
 export function ErrorMessage(error,group){
