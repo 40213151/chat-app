@@ -37,6 +37,7 @@ export default{
   },
   mounted(){
       this.fetchGroups()
+      bus.$on('sendSidebar', this.fetchGroups);
   }
 };
 </script>

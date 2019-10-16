@@ -66,6 +66,10 @@ export default {
     },
     editGroupName: function(){
       groupUpdate(this.group)
+      .then(response =>{
+        this.show = true;
+        bus.$emit('sendSidebar');
+      })
       .catch(error => {
         ErrorMessage(error,this);
       });
