@@ -1,16 +1,25 @@
 <template>
   <div class="chat">
     <div class="chat__head">
-      <div class="chat__head--left">
+      <div class="chat__head--left" v-show="show">
         <div class="chat-group-name">
-          チャットグループ名
+          {{ group.name }}
         </div>
-        <a class="short-font">
+        <a class="short-font" href="#open03" @click="show = !show">
           編集
         </a>
       </div>
+      <form @submit.prevent="editGroupName" class="chat-group-form" v-if="!show">
+        <input v-model="group.name" type="text" placeholder="グループ名" class="chat__footer__input">
+        <input type="submit" value="作成" class="chat__footer__submit group_submit">
+      </form>
+      <div class="error-message" v-if="errors.length != 0">
+        <ul v-for="e in errors" :key="e">
+          <li><font color="red">{{ e }}</font></li>
+        </ul>
+      </div>
       <div class="chat__head--right">
-        <a class="short-font">
+        <a class="short-font" href="#open03">
           チャットグループを削除する
         </a>
       </div>
@@ -34,6 +43,40 @@
     </div>
   </div>
 </template>
+<script>
+import {bus} from '../main.js';
+import {groupUpdate} from '../Api.js';
+import {ErrorMessage} from '../Api.js';
+
+export default {
+  data(){
+    return{
+      group: {},
+      errors: '',
+      show: true
+    }
+  },
+  mounted(){
+    bus.$on('bus-event', this.displayGroupName)
+  },
+  methods: {
+    displayGroupName(sideGroup){
+      this.show = true;
+      this.group = sideGroup.data
+    },
+    editGroupName(){
+      groupUpdate(this.group)
+      .then(response =>{
+        this.show = true;
+        bus.$emit('sendSidebar');
+      })
+      .catch(error => {
+        ErrorMessage(error,this);
+      });
+    }
+  }
+  };
+</script>
 <style lang="scss">
   .chat{
     float: right;
@@ -56,6 +99,9 @@
           display: inline-block;
           margin-right: 10px;
         }
+      }
+      .chat-group-form{
+        padding-left: 30px;
       }
       &--right{
         margin: 0 0 0 auto;
@@ -91,4 +137,11 @@
       }
     }
   }
+.none{
+  display: none;
+}
+
+.error-message{
+  float: left;
+}
 </style>

@@ -7,18 +7,20 @@
     </div>
     <div class="sidebar__list">
       <div  v-for="e in groups" :key="e.id" class="sidebar__list__group">
-        <div class="sidebar__list__group--name">
+        <a class="sidebar__list__group--name" v-on:click="setGroupinfo(e.id)">
           {{ e.name }}
-        </div>
+        </a>
       </div>
     </div>
   </div>
 </template>
 <script>
-import {groupList} from '../Api.js';
+import {groupList} from '../api.js';
+import {groupFind} from '../api.js';
+import {bus} from '../main.js';
 
 export default{
-  data:function(){
+  data(){
     return{
       groups: []
     }
@@ -27,10 +29,15 @@ export default{
     async fetchGroups () {
       const response = await groupList();
       this.groups = response.data
+    },
+    async setGroupinfo(id){
+      const sideGroup = await groupFind(id);
+      bus.$emit('bus-event', sideGroup);
     }
   },
   mounted(){
       this.fetchGroups()
+      bus.$on('sendSidebar', this.fetchGroups);
   }
 };
 </script>

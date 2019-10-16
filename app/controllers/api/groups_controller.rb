@@ -4,6 +4,11 @@ class Api::GroupsController < ApplicationController
     render json: groups
   end
 
+  def show
+    @group = Group.find(params[:id])
+    render json: @group
+  end
+
   def create
     @group = Group.new(group_params)
     if @group.save
@@ -11,6 +16,15 @@ class Api::GroupsController < ApplicationController
     else
       render json: { errors: @group.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def update
+    @group = Group.find(params[:id])
+      if @group.update(group_params)
+        head :no_content
+      else
+        render json: { errors: @group.errors.full_messages }, status: :unprocessable_entity
+      end
   end
 
   private
