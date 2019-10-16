@@ -20,7 +20,7 @@ import {groupFind} from '../api.js';
 import {bus} from '../main.js';
 
 export default{
-  data:function(){
+  data(){
     return{
       groups: []
     }

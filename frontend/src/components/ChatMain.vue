@@ -49,22 +49,22 @@ import {groupUpdate} from '../Api.js';
 import {ErrorMessage} from '../Api.js';
 
 export default {
-  data:function(){
+  data(){
     return{
       group: {},
       errors: '',
       show: true
     }
   },
-  mounted: function(){
+  mounted(){
     bus.$on('bus-event', this.displayGroupName)
   },
   methods: {
-    displayGroupName: function(sideGroup){
+    displayGroupName(sideGroup){
       this.show = true;
       this.group = sideGroup.data
     },
-    editGroupName: function(){
+    editGroupName(){
       groupUpdate(this.group)
       .then(response =>{
         this.show = true;

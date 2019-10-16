@@ -25,7 +25,7 @@ import {groupCreate} from '../Api.js';
 import {ErrorMessage} from '../Api.js';
 
 export default {
-  data: function() {
+  data() {
     return{
       group: {
         name:''
@@ -34,7 +34,7 @@ export default {
     }
   },
   methods: {
-    createGroup: function(){
+    createGroup(){
       groupCreate(this.group)
       .catch(error => {
         ErrorMessage(error,this);
