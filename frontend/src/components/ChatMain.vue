@@ -1,5 +1,5 @@
 <template>
-  <div class="chat">
+  <div class="chat" v-show="exit">
     <div class="chat__head">
       <div class="chat__head--left" v-show="show">
         <div class="chat-group-name">
@@ -19,7 +19,7 @@
         </ul>
       </div>
       <div class="chat__head--right">
-        <a class="short-font" href="#open03">
+        <a class="short-font" href="#open03" v-on:click="deleteGroupData(group.id)">
           チャットグループを削除する
         </a>
       </div>
@@ -46,6 +46,7 @@
 <script>
 import {bus} from '../main.js';
 import {groupUpdate} from '../Api.js';
+import {groupDelete} from '../Api.js';
 import {ErrorMessage} from '../Api.js';
 
 export default {
@@ -53,7 +54,8 @@ export default {
     return{
       group: {},
       errors: '',
-      show: true
+      show: true,
+      exit: false
     }
   },
   mounted(){
@@ -62,6 +64,7 @@ export default {
   methods: {
     displayGroupName(sideGroup){
       this.show = true;
+      this.exit = true;
       this.group = sideGroup.data
     },
     editGroupName(){
@@ -73,9 +76,16 @@ export default {
       .catch(error => {
         ErrorMessage(error,this);
       });
+    },
+    deleteGroupData(id){
+      groupDelete(id)
+      .then(response =>{
+        bus.$emit('sendSidebar');
+        this.exit = false;
+      })
     }
   }
-  };
+};
 </script>
 <style lang="scss">
   .chat{
