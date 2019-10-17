@@ -41,4 +41,13 @@ RSpec.describe "GroupApis", type: :request do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:group) { FactoryBot.create :test }
+    it "add group" do
+      expect{
+        delete api_group_path group
+      }.to change(Group, :count).by(-1)
+    end
+  end
 end
