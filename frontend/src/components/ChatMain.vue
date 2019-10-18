@@ -25,21 +25,15 @@
       </div>
     </div>
     <div class="chat__main">
-      <div class="message">
-        メッセージ
-      </div>
-      <div class="message">
-        メッセージ
-      </div>
-      <div class="message">
-        メッセージ
+      <div  v-for="e in messages" :key="e.id" class="message">
+        {{ e.content }}
       </div>
     </div>
     <div class="chat__footer">
-      <form class="form">
-        <input type="text" class="chat__footer__input">
-        <input type="submit" class="chat__footer__submit" value="送信">
-      </form>
+      <div class="form">
+        <input type="text" class="chat__footer__input" v-model="msgBox">
+        <input type="submit" class="chat__footer__submit" value="送信" v-if="messageChannel" @click="speak">
+      </div>
     </div>
   </div>
 </template>
@@ -48,15 +42,29 @@ import {bus} from '../main.js';
 import {groupUpdate} from '../Api.js';
 import {groupDelete} from '../Api.js';
 import {ErrorMessage} from '../Api.js';
+import {messageList} from '../Api.js';
 
 export default {
   data(){
     return{
+      msgBox: "",
       group: {},
+      messages: [],
       errors: '',
+      messageChannel: null,
       show: true,
       exit: false
     }
+  },
+  created(){
+    // サーバーのチャンネルを動かすメソッド
+    this.messageChannel = this.$cable.subscriptions.create( "MessageChannel",{
+      received: (data) => {
+        this.messages.push(data);
+        // サーバーからデータ受信したらメッセージ一覧表示
+        this.fetchMessages(this.group.id);
+      },
+    })
   },
   mounted(){
     bus.$on('bus-event', this.displayGroupName)
@@ -65,7 +73,9 @@ export default {
     displayGroupName(sideGroup){
       this.show = true;
       this.exit = true;
-      this.group = sideGroup.data
+      this.group = sideGroup.data;
+      // サイドバーからgroup選択したタイミングでメッセージ一覧表示
+      this.fetchMessages(this.group.id);
     },
     editGroupName(){
       groupUpdate(this.group)
@@ -83,8 +93,22 @@ export default {
         bus.$emit('sendSidebar');
         this.exit = false;
       })
+    },
+    // メッセージ一覧表示するメソッド
+    async fetchMessages (id) {
+      const response = await messageList(id);
+      this.messages = response.data;
+    },
+    //チャンネルへ送信するメソッド、送信押したタイミングで発火
+    speak(){
+      this.messageChannel.perform('speak',{
+        message: this.msgBox,
+        group_id: this.group.id,
+      });
+      //送信するタイミングで入力欄を空にする
+      this.msgBox = '';
     }
-  }
+  },
 };
 </script>
 <style lang="scss">

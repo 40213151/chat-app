@@ -23,8 +23,13 @@ export const groupUpdate = group =>
 export const groupDelete = id =>
   axios.delete(`http://localhost:3000/api/groups/${id}`);
 
+// エラー処理
 export const ErrorMessage = (error,group) => {
   if(error.response.data && error.response.data.errors){
     group.errors = error.response.data.errors;
   }
 }
+
+// メッセージ一覧表示
+export const messageList = group_id =>
+  axios.get(localGroupUrl + `${group_id}` + `/messages`)
